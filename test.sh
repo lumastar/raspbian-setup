@@ -12,9 +12,9 @@ echo "Will now test silent boot script"
 
 # Test update_user.sh
 echo "Will now test update user script"
-USER_NAME=test1
-USER_PASSWORD=test1
-echo "Will change pi user name, group and password to $"
+USER_NAME=test-name
+USER_PASSWORD=test-password
+echo "Will change pi user name and group to $USER_NAME and password to $USER_PASSWORD"
 ./update_user.sh pi $USER_NAME $USER_PASSWORD
 # Try running whoami as the changed user
 su $USER_NAME <<EOSU
