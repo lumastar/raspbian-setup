@@ -17,4 +17,5 @@ docker run --privileged --rm \
   -e SCRIPT=/raspbian-setup/test.sh \
   -e ADD_DATA_PART=true \
   --mount type=bind,source="$(pwd)",destination=/raspbian-setup \
+  -w /raspbian-setup \
   edwardotme/raspbian-customiser:v0.2
