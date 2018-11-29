@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# This script performs some basic testing on the scripts in this repository
+# It is designed to be run in a Raspbian environment
+
 set -e
 
 echo "Will now test raspbian-setup scripts"
