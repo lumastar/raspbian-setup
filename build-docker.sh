@@ -18,3 +18,6 @@ docker run --privileged --rm \
   -e ADD_DATA_PART=true \
   --mount type=bind,source="$(pwd)",destination=/raspbian-setup \
   edwardotme/raspbian-customiser:v0.2
+
+echo "DEPOLY - Will now package scripts"
+zip raspbian-setup-${TRAVIS_TAG}.zip set_hostname.sh silent_boot.sh update_user.sh

@@ -7,3 +7,11 @@ services:
 
 script:
   - ./build-docker.sh
+
+deploy:
+  provider: releases
+  api_key: "$GITHUB_API_TOKEN"
+  file: "raspbian-setup-$TRAVIS_TAG.zip"
+  skip_cleanup: true
+  on:
+    tags: true
