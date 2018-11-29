@@ -38,4 +38,4 @@ CURRENT_HOSTNAME=$(cat /etc/hostname)
 if [ $NEW_HOSTNAME != $CURRENT_HOSTNAME ]; then
 	echo "Set hostname failed!"
 	exit 1
-]
+fi
