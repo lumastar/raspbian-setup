@@ -34,7 +34,7 @@ echo "CURRENT_HOSTNAME: $CURRENT_HOSTNAME"
 NEW_HOSTNAME=raspbian-setup-test
 echo "NEW HOSTNAME: $NEW_HOSTNAME"
 ./set_hostname.sh $NEW_HOSTNAME
-CURRENT_HOSTNAME=$(cat /etc/hostname)
+CURRENT_HOSTNAME=$(cat /etc/hostname | tr -d \\n)
 if [ $NEW_HOSTNAME != $CURRENT_HOSTNAME ]; then
 	echo "Set hostname failed!"
 	exit 1
