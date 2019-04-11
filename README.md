@@ -1,6 +1,6 @@
 # raspbian-setup
 
-[![Build Status](https://travis-ci.com/EDWARDOtme/raspbian-setup.svg?branch=master)](https://travis-ci.com/EDWARDOtme/raspbian-setup)
+[![Build Status](https://travis-ci.com/lumastar/raspbian-setup.svg?branch=master)](https://travis-ci.com/lumastar/raspbian-setup)
 
 Scripts to make setup of Raspbian quicker and easier.
 
