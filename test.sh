@@ -44,3 +44,18 @@ if [ "$NEW_HOSTNAME" != "$CURRENT_HOSTNAME" ]; then
 	echo "Set hostname failed!"
 	exit 1
 fi
+
+# Test raspbian-setup.sh
+echo "Will now test Raspbian setup script"
+CONFIG_PATH=raspbian-setup.test.conf
+echo "Will now build test config"
+echo "CONFIG_PATH: $CONFIG_PATH"
+echo "SILENT_BOOT=enable" >> $CONFIG_PATH
+echo "HOSTNAME=raspbian-setup" >> $CONFIG_PATH
+echo "UPDATE_USER=$USER_NAME,$USER_NAME-1,$USER_PASSWORD-1" >> $CONFIG_PATH
+cat $CONFIG_PATH 
+LOG_PATH=raspbian-setup.log
+echo "LOG_PATH: $LOG_PATH"
+./raspbian-setup.sh $CONFIG_PATH $LOG_PATH
+cat $LOG_PATH
+# TODO: test
