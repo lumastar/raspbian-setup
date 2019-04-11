@@ -19,5 +19,5 @@ This service will use a combination of the scripts in this repository and the `r
 Currently the following scripts are available:
 
 *  `set-hostname.sh` - set the system hostname
-*  `silent_boot.sh` - make the boot process silent so no messages are output to the connected display
-*  `update_user.sh` - change the user name, group and password
+*  `silent-boot.sh` - make the boot process silent so no messages are output to the connected display
+*  `update-user.sh` - change the user name, group and password

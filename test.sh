@@ -8,17 +8,17 @@ set -e
 echo "Will now test raspbian-setup scripts"
 cd /raspbian-setup
 
-# Test silent_boot.sh
+# Test silent-boot.sh
 echo "Will now test silent boot script"
-./silent_boot.sh enable
-./silent_boot.sh disable
+./silent-boot.sh enable
+./silent-boot.sh disable
 
-# Test update_user.sh
+# Test update-user.sh
 echo "Will now test update user script"
 USER_NAME=test-name
 USER_PASSWORD=test-password
 echo "Will change pi user name and group to $USER_NAME and password to $USER_PASSWORD"
-./update_user.sh pi $USER_NAME $USER_PASSWORD
+./update-user.sh pi $USER_NAME $USER_PASSWORD
 # Try running whoami as the changed user
 su $USER_NAME <<EOSU
 $USER_PASSWORD
@@ -30,14 +30,14 @@ if ! $(id -Gn $USER_NAME | grep -qw $USER_NAME); then
 	exit 1
 fi
 
-# Test set_hostname.sh
+# Test set-hostname.sh
 echo "Will now test set hostname script"
 CURRENT_HOSTNAME=$(cat /etc/hostname)
 echo "CURRENT_HOSTNAME: $CURRENT_HOSTNAME"
 NEW_HOSTNAME=raspbian-setup-test
 echo "NEW_HOSTNAME: $NEW_HOSTNAME"
 echo "Setting hostname to NEW_HOSTNAME..."
-./set_hostname.sh $NEW_HOSTNAME
+./set-hostname.sh $NEW_HOSTNAME
 CURRENT_HOSTNAME=$(cat /etc/hostname)
 echo "CURRENT_HOSTNAME: $CURRENT_HOSTNAME"
 if [ "$NEW_HOSTNAME" != "$CURRENT_HOSTNAME" ]; then

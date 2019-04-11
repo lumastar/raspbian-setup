@@ -20,4 +20,4 @@ docker run --privileged --rm \
   edwardotme/raspbian-customiser:v0.2
 
 echo "DEPOLY - Will now package scripts"
-zip raspbian-setup-${TRAVIS_TAG}.zip set_hostname.sh silent_boot.sh update_user.sh
+zip raspbian-setup-${TRAVIS_TAG}.zip set-hostname.sh silent-boot.sh update-user.sh
