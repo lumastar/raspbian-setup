@@ -86,3 +86,12 @@ if [ "$NEW_HOSTNAME" != "$CURRENT_HOSTNAME" ]; then
 	echo "Set hostname failed!"
 	exit 1
 fi
+
+# Test install-wireguard.sh
+echo "Will now test set Wireguard install script"
+./install-wireguard.sh
+wg
+if [ "$?" != 0 ]; then
+	echo "Wireguard install failed!"
+	exit 1
+fi
