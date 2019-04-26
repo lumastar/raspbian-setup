@@ -2,8 +2,12 @@
 
 set -e
 
+SCRIPTS=("set-hostname.sh" "silent-boot.sh" "update-user.sh")
+
 echo "BUILD - Will now pull Docker image"
 docker pull edwardotme/raspbian-customiser:v0.2
+echo "BUILD - Will now set scripts to be executable"
+chmod +x ${SCRIPTS[@]}
 
 echo "TEST - Will now test scripts"
 IMAGE_LINK=http://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2018-10-11/2018-10-09-raspbian-stretch-lite.zip
@@ -20,4 +24,4 @@ docker run --privileged --rm \
   edwardotme/raspbian-customiser:v0.2
 
 echo "DEPOLY - Will now package scripts"
-zip raspbian-setup-${TRAVIS_TAG}.zip set-hostname.sh silent-boot.sh update-user.sh
+zip raspbian-setup-${TRAVIS_TAG}.zip ${SCRIPTS[@]}
