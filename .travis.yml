@@ -6,7 +6,7 @@ services:
   - docker
 
 script:
-  - ./travis-ci.sh
+  - ./travis.sh
 
 deploy:
   provider: releases

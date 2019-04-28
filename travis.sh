@@ -2,7 +2,8 @@
 
 set -e
 
-SCRIPTS=("set-hostname.sh" "silent-boot.sh" "update-user.sh")
+SCRIPTS=("set-hostname.sh" "silent-boot.sh" "update-user.sh" "raspbian-setup.sh")
+ASSETS=("raspbian-setup.example.conf")
 
 echo "BUILD - Will now pull Docker image"
 docker pull edwardotme/raspbian-customiser:v0.2
@@ -24,4 +25,7 @@ docker run --privileged --rm \
   edwardotme/raspbian-customiser:v0.2
 
 echo "DEPOLY - Will now package scripts"
-zip raspbian-setup-${TRAVIS_TAG}.zip ${SCRIPTS[@]}
+mkdir raspbian-setup
+mv ${SCRIPTS[@]} raspbian-setup/
+mv ${ASSETS[@]} raspbian-setup/
+zip raspbian-setup-${TRAVIS_TAG}.zip raspbian-setup/
