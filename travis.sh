@@ -28,4 +28,4 @@ echo "DEPOLY - Will now package scripts"
 mkdir raspbian-setup
 mv ${SCRIPTS[@]} raspbian-setup/
 mv ${ASSETS[@]} raspbian-setup/
-zip raspbian-setup-${TRAVIS_TAG}.zip raspbian-setup/
+zip -r raspbian-setup-${TRAVIS_TAG}.zip raspbian-setup/
