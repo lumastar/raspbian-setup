@@ -2,7 +2,7 @@
 
 set -e
 
-SCRIPTS=("set-hostname.sh" "silent-boot.sh" "update-user.sh" "raspbian-setup.sh")
+SCRIPTS=("set-hostname.sh" "silent-boot.sh" "update-user.sh" "raspbian-setup.sh" "install-wireguard.sh")
 ASSETS=("raspbian-setup.example.conf")
 
 echo "BUILD - Will now pull Docker image"
