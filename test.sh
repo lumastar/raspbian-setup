@@ -47,6 +47,16 @@ if [ "$NEW_HOSTNAME" != "$CURRENT_HOSTNAME" ]; then
 	exit 1
 fi
 
+# Test install-wireguard.sh
+echo "Will now test set Wireguard install script"
+./install-wireguard.sh
+# Check wg command is present
+wg
+if [ "$?" != 0 ]; then
+	echo "Wireguard install failed!"
+	exit 1
+fi
+
 # Test raspbian-setup.sh
 echo "Will now test Raspbian setup script"
 # Create config file
@@ -60,6 +70,7 @@ USER_PASSWORD="password-again"
 echo "UPDATE_USER=$OLD_USER_NAME,$USER_NAME,$USER_PASSWORD" >> $CONFIG_PATH
 NEW_HOSTNAME="raspbian-setup-again"
 echo "HOSTNAME=$NEW_HOSTNAME" >> $CONFIG_PATH
+echo "INSTALL_WIREGUARD=true" >> $CONFIG_PATH
 cat $CONFIG_PATH
 # Create log file
 LOG_PATH=raspbian-setup.log

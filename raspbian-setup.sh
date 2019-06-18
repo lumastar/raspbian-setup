@@ -22,5 +22,10 @@ while read line; do
 			IFS="," read -a argparts <<<"${lineparts[1]}"
 			./update-user.sh "${argparts[0]}" "${argparts[1]}" "${argparts[2]}" > $LOG_PATH
 			;;
+		INSTALL_WIREGUARD)
+			if [ "${lineparts[1]}" == "true" ]; then
+				./install-wireguard.sh
+			fi
+			;;
 	esac
 done < "$CONFIG_PATH"
