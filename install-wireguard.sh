@@ -11,6 +11,11 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
+if [ -x /usr/bin/wg ]; then
+	echo "looks like Wireguard is already installed at /usr/bin/wg"
+	exit 0
+fi
+
 apt-get update
 apt-get upgrade -y
 apt-get install -y raspberrypi-kernel-headers
