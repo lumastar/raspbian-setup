@@ -1,4 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+set -o xtrace
 
 USAGE="usage: silent-boot.sh {enable|disable}"
 
@@ -8,7 +13,7 @@ if [ "$#" -ne 1 ]; then
 fi
 
 if [[ $EUID -ne 0 ]]; then
-   echo "this script must be run as root" 
+   echo "this script must be run as root"
    exit 1
 fi
 

@@ -1,9 +1,12 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+set -o xtrace
 
 # This script performs some basic testing on the scripts in this repository
 # It is designed to be run in a Raspbian environment
-
-set -e
 
 echo "Will now test raspbian-setup scripts"
 cd /raspbian-setup

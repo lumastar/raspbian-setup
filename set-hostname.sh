@@ -1,6 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -o errexit
+set -o nounset
+set -o pipefail
+set -o xtrace
 
 USAGE="usage: set-hostname.sh {hostname}"
 
@@ -10,7 +13,7 @@ if [ "$#" -ne 1 ]; then
 fi
 
 if [[ $EUID -ne 0 ]]; then
-   echo "this script requires root privileges" 
+   echo "this script requires root privileges"
    exit 1
 fi
 
