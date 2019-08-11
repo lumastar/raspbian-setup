@@ -18,8 +18,8 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-while read line; do
-	IFS="=" read -a lineparts <<<"$line"
+while read -r line; do
+	IFS="=" read -a -r lineparts <<<"$line"
 	case "${lineparts[0]}" in
 		SILENT_BOOT)
 			./silent-boot.sh "${lineparts[1]}"
@@ -28,7 +28,7 @@ while read line; do
 			./set-hostname.sh "${lineparts[1]}"
 			;;
 		UPDATE_USER)
-			IFS="," read -a argparts <<<"${lineparts[1]}"
+			IFS="," read -a -r argparts <<<"${lineparts[1]}"
 			./update-user.sh "${argparts[0]}" "${argparts[1]}" "${argparts[2]}"
 			;;
 		INSTALL_WIREGUARD)
