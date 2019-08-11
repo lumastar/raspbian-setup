@@ -5,7 +5,18 @@ set -o nounset
 set -o pipefail
 set -o xtrace
 
-CONFIG_PATH=$1
+USAGE="usage: raspbian-setup.sh {config-path}"
+
+if [[ "$#" -ne 1 ]]; then
+    echo "$USAGE"
+    exit 1
+fi
+CONFIG_PATH=${1:-}
+
+if [[ $EUID -ne 0 ]]; then
+   echo "this script must be run as root"
+   exit 1
+fi
 
 while read line; do
 	IFS="=" read -a lineparts <<<"$line"
