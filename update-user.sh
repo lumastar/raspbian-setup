@@ -5,77 +5,60 @@ set -o nounset
 set -o pipefail
 set -o xtrace
 
-USAGE="usage: update_user.sh {old user name} {new user name} {new password}"
+USAGE="usage: update_user.sh {old user name} {new user name} [new password]"
 
-# TODO: if no new password is given then do not change the password
+USERNAME_OLD="${1:-}"
+USERNAME_NEW="${2:-}"
+PASSWORD_NEW="${3:-}"
 
-if [[ "$#" -ne 3 ]]; then
+if [[ "$#" -lt 2 ]]; then
     echo "$USAGE"
     exit 1
 fi
 
 if [[ $EUID -ne 0 ]]; then
-   echo "this script must be run as root"
+   echo "This script must be run as root"
    exit 1
 fi
 
-# TODO: check if USERNAME_OLD is logged in
-
-USERNAME_OLD=$1
-USERNAME_NEW=$2
-PASSWORD_NEW=$3
-
-# Check if user USERNAME_OLD exists
-id -u $USERNAME_OLD
-if [[ $? == 0 ]]; then
-	# Change the username USERNAME_OLD to the new username
-	usermod -l $USERNAME_NEW $USERNAME_OLD
-	if [ $? != "0" ]; then
-		echo "Error changing username, exiting..."
-		exit 1
-	fi
-else
-	# If the user USERNAME_OLD doesn't exist check if the new username exists
-	id -u $USERNAME_NEW
-	if [ $? != "0" ]; then
-		echo "Error changing username, no users named $USERNAME_OLD or $USERNAME_NEW exist, exiting..."
-		exit 1
-	else
-		echo "Warning, no user called $USERNAME_OLD and user called $USERNAME_NEW exists, assuming name has already been changed and proceeding"
-	fi
-fi
-
-usermod -m -d /home/$USERNAME_NEW $USERNAME_NEW
-if [ $? != "0" ]; then
-	echo "Error changing user home folder, exiting..."
+if who -u | grep -q "^$USERNAME_OLD "; then
+	echo "${USERNAME_OLD} is currently logged in, users must be logged out to change their name"
 	exit 1
 fi
 
+# Check if user USERNAME_OLD exists
+id -u "$USERNAME_OLD"
 # Check if group USERNAME_OLD exists
-getent group $USERNAME_OLD
-if [ $? == "0" ]; then
-	# Change the username USERNAME_OLD to the new username
-	groupmod --new-name $USERNAME_NEW $USERNAME_OLD
-	if [ $? != "0" ]; then
-		echo "Error changing group name, exiting..."
-		exit 1
-	fi
-else
-	# If the user USERNAME_OLD doesn't exist check if the new username exists
-	getent group $USERNAME_NEW
-	if [ $? != "0" ]; then
-		echo "Error changing group name, no groups named $USERNAME_OLD or $USERNAME_NEW exist, exiting..."
-		exit 1
-	else
-		echo "Warning, no group called $USERNAME_OLD, group called $USERNAME_NEW exists, assuming name has already been changed and proceeding"
-	fi
+getent group "$USERNAME_OLD"
+
+# Make sure user USERNAME_NEW doesn't already exist
+if id -u "$USERNAME_NEW"; then
+	echo "User ${USERNAME_NEW} already exists"
+	exit 1
+fi
+# Make sure group USERNAME_NEW doesn't already exist
+if getent group "$USERNAME_NEW"; then
+	echo "Group ${USERNAME_NEW} already exists"
+	exit 1
+fi
+
+# Change the username USERNAME_OLD to USERNAME_NEW
+usermod -l "$USERNAME_NEW" "$USERNAME_OLD"
+# If the old user had a conventional home directory...
+if [ -f "/home/${USERNAME_OLD}" ]; then
+	# ... rename it and update the users home folder
+	mv "/home/${USERNAME_OLD}" "/home/${USERNAME_NEW}"
+	usermod -m -d "/home/${USERNAME_NEW}" "$USERNAME_NEW"
+fi
+# Change the user group name
+groupmod --new-name "$USERNAME_NEW" "$USERNAME_OLD"
+# If a password has been supplied then change it
+if [ "$PASSWORD_NEW" != "" ]; then
+	echo "$USERNAME_NEW:$PASSWORD_NEW" | chpasswd
 fi
 
 # Add new username to pi-nopasswd so no password is required for sudo
 sed -i "s/${USERNAME_OLD}/${USERNAME_NEW}/g" /etc/sudoers.d/010_pi-nopasswd
-if [ $? != "0" ]; then
-	echo "Could not add new user to 010_pi-nopasswd, will ignore..."
-fi
 
 # Move crontabs file
 if [ -f /var/spool/cron/crontabs/"${USERNAME_OLD}" ]; then
@@ -86,12 +69,3 @@ fi
 if [ -f /var/spool/mail/"${USERNAME_OLD}" ]; then
 	mv -v /var/spool/mail/"${USERNAME_OLD}" /var/spool/mail/"${USERNAME_NEW}"
 fi
-
-# Set password
-echo "$USERNAME_NEW:$PASSWORD_NEW" | chpasswd
-if [ $? != "0" ]; then
-	echo "Error changing user password, exiting..."
-	exit 1
-fi
-
-exit 0
