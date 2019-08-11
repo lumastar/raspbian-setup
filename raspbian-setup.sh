@@ -1,26 +1,35 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -o errexit
+set -o nounset
+set -o pipefail
+set -o xtrace
 
-CONFIG_PATH=$1
+USAGE="usage: raspbian-setup.sh {config-path}"
 
-# Create a log file
-LOG_PATH=$2
-echo "raspbian-setup.sh" > $LOG_PATH
-date +"%Y-%m-%d-%T" > $LOG_PATH
+if [[ "$#" -ne 1 ]]; then
+    echo "$USAGE"
+    exit 1
+fi
+CONFIG_PATH=${1:-}
 
-while read line; do
-	IFS="=" read -a lineparts <<<"$line"
+if [[ $EUID -ne 0 ]]; then
+   echo "this script must be run as root"
+   exit 1
+fi
+
+while read -r line; do
+	IFS="=" read -r -a lineparts <<<"$line"
 	case "${lineparts[0]}" in
 		SILENT_BOOT)
-			./silent-boot.sh "${lineparts[1]}" > $LOG_PATH
+			./silent-boot.sh "${lineparts[1]}"
 			;;
 		HOSTNAME)
-			./set-hostname.sh "${lineparts[1]}" > $LOG_PATH
+			./set-hostname.sh "${lineparts[1]}"
 			;;
 		UPDATE_USER)
-			IFS="," read -a argparts <<<"${lineparts[1]}"
-			./update-user.sh "${argparts[0]}" "${argparts[1]}" "${argparts[2]}" > $LOG_PATH
+			IFS="," read -r -a argparts <<<"${lineparts[1]}"
+			./update-user.sh "${argparts[0]}" "${argparts[1]}" "${argparts[2]}"
 			;;
 		INSTALL_WIREGUARD)
 			if [ "${lineparts[1]}" == "true" ]; then

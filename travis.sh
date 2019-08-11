@@ -1,6 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -o errexit
+set -o nounset
+set -o pipefail
+set -o xtrace
 
 SCRIPTS=("set-hostname.sh" "silent-boot.sh" "update-user.sh" "raspbian-setup.sh" "install-wireguard.sh")
 ASSETS=("raspbian-setup.example.conf")
@@ -9,8 +12,14 @@ echo "BUILD - Will now pull Docker image"
 docker pull edwardotme/raspbian-customiser:v0.2
 echo "BUILD - Will now set scripts to be executable"
 chmod +x ${SCRIPTS[@]}
+echo "BUILD - Will now fetch dependencies"
+sudo apt-get update
+sudo apt-get install --yes shellcheck
 
 echo "TEST - Will now test scripts"
+for SCRIPT in "${SCRIPTS[@]}"; do
+    shellcheck "$SCRIPT"
+done
 IMAGE_LINK=http://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2018-10-11/2018-10-09-raspbian-stretch-lite.zip
 wget -nv $IMAGE_LINK
 IMAGE_ZIP=$(basename $IMAGE_LINK)

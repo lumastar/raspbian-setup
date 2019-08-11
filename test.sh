@@ -1,9 +1,12 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+set -o xtrace
 
 # This script performs some basic testing on the scripts in this repository
 # It is designed to be run in a Raspbian environment
-
-set -e
 
 echo "Will now test raspbian-setup scripts"
 cd /raspbian-setup
@@ -72,13 +75,8 @@ NEW_HOSTNAME="raspbian-setup-again"
 echo "HOSTNAME=$NEW_HOSTNAME" >> $CONFIG_PATH
 echo "INSTALL_WIREGUARD=true" >> $CONFIG_PATH
 cat $CONFIG_PATH
-# Create log file
-LOG_PATH=raspbian-setup.log
-echo "LOG_PATH: $LOG_PATH"
-# Run raspbian-setup.sh with created config and log files
-./raspbian-setup.sh $CONFIG_PATH $LOG_PATH
-# Display the log file
-cat $LOG_PATH
+# Run raspbian-setup.sh with created config file
+./raspbian-setup.sh $CONFIG_PATH
 # Check the user name, password and group was changed
 # Try running whoami as the changed user
 su $USER_NAME <<EOSU
