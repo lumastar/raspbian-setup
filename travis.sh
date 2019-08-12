@@ -9,7 +9,7 @@ SCRIPTS=("set-hostname.sh" "silent-boot.sh" "update-user.sh" "raspbian-setup.sh"
 ASSETS=("raspbian-setup.example.conf")
 
 echo "BUILD - Will now pull Docker image"
-docker pull edwardotme/raspbian-customiser:v0.2
+docker pull quay.io/lumastar/raspbian-customiser:v0.2.2
 echo "BUILD - Will now set scripts to be executable"
 chmod +x ${SCRIPTS[@]}
 echo "BUILD - Will now fetch dependencies"
@@ -31,7 +31,7 @@ docker run --privileged --rm \
   -e SCRIPT=/raspbian-setup/test.sh \
   -e ADD_DATA_PART=true \
   --mount type=bind,source="$(pwd)",destination=/raspbian-setup \
-  edwardotme/raspbian-customiser:v0.2
+  quay.io/lumastar/raspbian-customiser:v0.2.2
 
 echo "DEPOLY - Will now package scripts"
 mkdir raspbian-setup
