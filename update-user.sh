@@ -46,8 +46,7 @@ fi
 usermod -l "$USERNAME_NEW" "$USERNAME_OLD"
 # If the old user had a conventional home directory...
 if [ -d "/home/${USERNAME_OLD}" ]; then
-	# ... rename it and update the users home folder
-	mv "/home/${USERNAME_OLD}" "/home/${USERNAME_NEW}"
+	# ... change it and move the contents of the old one
 	usermod -m -d "/home/${USERNAME_NEW}" "$USERNAME_NEW"
 fi
 # Change the user group name
