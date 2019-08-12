@@ -17,6 +17,8 @@ sudo apt-get update
 sudo apt-get install --yes shellcheck
 
 echo "TEST - Will now test scripts"
+shellcheck test.sh
+shellcheck travis.sh
 for SCRIPT in "${SCRIPTS[@]}"; do
     shellcheck "$SCRIPT"
 done
