@@ -45,7 +45,7 @@ fi
 # Change the username USERNAME_OLD to USERNAME_NEW
 usermod -l "$USERNAME_NEW" "$USERNAME_OLD"
 # If the old user had a conventional home directory...
-if [ -f "/home/${USERNAME_OLD}" ]; then
+if [ -d "/home/${USERNAME_OLD}" ]; then
 	# ... rename it and update the users home folder
 	mv "/home/${USERNAME_OLD}" "/home/${USERNAME_NEW}"
 	usermod -m -d "/home/${USERNAME_NEW}" "$USERNAME_NEW"
