@@ -29,8 +29,13 @@ $USER_PASSWORD
 whoami
 EOSU
 # Check the users group has been changed
-if ! $(id -Gn $USER_NAME | grep -qw $USER_NAME); then
+if ! id -Gn $USER_NAME | grep -qw $USER_NAME; then
 	echo "Update user script failed to change group"
+	exit 1
+fi
+# The user should have a home, check is has also been changed
+if [ ! -d "/home/${USER_NAME}" ]; then
+	echo "Update user script failed to change the home directory"
 	exit 1
 fi
 
@@ -54,8 +59,7 @@ fi
 echo "Will now test set Wireguard install script"
 ./install-wireguard.sh
 # Check wg command is present
-wg
-if [ "$?" != 0 ]; then
+if ! wg; then
 	echo "Wireguard install failed!"
 	exit 1
 fi
@@ -84,8 +88,13 @@ $USER_PASSWORD
 whoami
 EOSU
 # Check the users group has been changed
-if ! $(id -Gn $USER_NAME | grep -qw $USER_NAME); then
+if ! id -Gn $USER_NAME | grep -qw $USER_NAME; then
 	echo "Update user script failed to change group"
+	exit 1
+fi
+# The user should have a home, check is has also been changed
+if [ ! -d "/home/${USER_NAME}" ]; then
+	echo "Update user script failed to change the home directory"
 	exit 1
 fi
 # Check the hostname was changed
